@@ -13,6 +13,6 @@ variable "environment" {
 }
 
 variable "hosted_zone_name" {
-  description = "The name of the route53 hosted zone. Generally, hosted zone should be created before terraform provision."
+  description = "Used for Load Balancer. The name of the route53 hosted zone. Generally, hosted zone should be created before terraform provision."
   type        = string
 }

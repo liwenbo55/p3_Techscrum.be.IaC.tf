@@ -47,6 +47,12 @@ variable "evaluate_target_health" {
   default = true
 }
 
+variable "hosted_zone_name" {
+  description = "The name of the route53 hosted zone. Generally, hosted zone should be created before terraform provision."
+  type        = string
+}
+
+
 # ACM
 variable "validation_method" {
   description = "Validation_method is set to 'DNS' by default."
