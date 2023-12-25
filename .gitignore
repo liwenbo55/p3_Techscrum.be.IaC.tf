@@ -3,3 +3,4 @@ terraform.*
 .terraform
 tf_backend_provision
 *_PLAN
+*_DESTROY
