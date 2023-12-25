@@ -75,15 +75,15 @@ variable "container_essential" {
 }
 
 variable "container_portMappings_containerPort" {
-  description = "The port number on the container that's bound to the user-specified assigned port. Set to 8080 for crankbit project."
+  description = "The port number on the container that's bound to the user-specified assigned port. Set to 8000 for Techscrum project."
   type        = number
-  default     = 8080
+  default     = 8000
 }
 
 variable "container_portMappings_hostPort" {
-  description = "The port number on the container instance to reserve for container. If using containers in a task with the Fargate launch type, the hostPort can either be kept blank or be the same value as containerPort. Set to 8080 for crankbit project."
+  description = "The port number on the container instance to reserve for container. If using containers in a task with the Fargate launch type, the hostPort can either be kept blank or be the same value as containerPort. Set to 8000 for Techscrum project."
   type        = number
-  default     = 8080
+  default     = 8000
 }
 
 variable "container_portMappings_protocol" {
@@ -95,7 +95,7 @@ variable "container_portMappings_protocol" {
 
 # ECS service
 variable "ecs_service_launch_type" {
-  description = "Launch type on which to run the service. Default to FARGATE in crankbit project."
+  description = "Launch type on which to run the service. Default to FARGATE in this project."
   type        = string
   default     = "FARGATE"
 }

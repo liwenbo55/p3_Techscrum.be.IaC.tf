@@ -105,7 +105,7 @@ resource "aws_cloudwatch_log_group" "ecs_container_log_group" {
 
   tags = {
     Environment = "${var.environment}"
-    Application = "Crankbit"
+    Application = "${var.project_name}"
   }
 }
 
@@ -131,7 +131,7 @@ resource "aws_appautoscaling_policy" "ecs_policy" {
   resource_id        = aws_appautoscaling_target.ecs_target.resource_id
   scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
   service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
-  
+
 
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
