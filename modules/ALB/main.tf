@@ -71,11 +71,6 @@ resource "aws_lb_listener" "backendalb_443" {
 ##########################################################################
 resource "aws_route53_record" "a_record_for_alb" {
   zone_id = var.hosted_zone_id
-  # This for project
-  # name    = "www.backend.${var.environment}.${var.project_name}.com" 
-  # This for my test
-  # name    = "backend.${var.environment}.wenboli.xyz"
-  # new branch test
   name = "backend.${var.environment}.${var.hosted_zone_name}"
   type = var.record_type_A
 
@@ -90,8 +85,6 @@ resource "aws_route53_record" "a_record_for_alb" {
 # Add SSL certificate for load balancer A record
 ##########################################################################
 resource "aws_acm_certificate" "acm_certificate" {
-  # domain_name               = "www.backend.${var.environment}.${var.project_name}.com"
-  # domain_name               = "backend.${var.environment}.wenboli.xyz"
   domain_name = "backend.${var.environment}.${var.hosted_zone_name}"
   # subject_alternative_names = ["backend.${var.environment}.${var.project_name}.com"]
   validation_method = var.validation_method
