@@ -40,7 +40,7 @@ module "ALB" {
   alb_vpc_subnets         = [module.VPC.vpc_public_subnet_1_id, module.VPC.vpc_public_subnet_2_id]
   alb_target_group_vpc_id = module.VPC.vpc_id
   hosted_zone_id          = data.aws_route53_zone.hosted_zone.zone_id
-
+  hosted_zone_name        = var.hosted_zone_name
 }
 
 module "ECS" {
