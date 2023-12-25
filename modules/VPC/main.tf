@@ -8,25 +8,25 @@ resource "aws_vpc" "backend_vpc" {
 ##########################################################################
 # subnets
 ##########################################################################
-resource "aws_subnet" "crankbit_public_subnet_1" {
+resource "aws_subnet" "techscrum_public_subnet_1" {
   vpc_id            = aws_vpc.backend_vpc.id
   cidr_block        = var.public_subnet_1_cidr_block
   tags              = { Name = "${var.project_name}-backend-public-subnet-1-${var.environment}" }
   availability_zone = var.availability_zone_1
 }
-resource "aws_subnet" "crankbit_public_subnet_2" {
+resource "aws_subnet" "techscrum_public_subnet_2" {
   vpc_id            = aws_vpc.backend_vpc.id
   cidr_block        = var.public_subnet_2_cidr_block
   tags              = { Name = "${var.project_name}-backend-public-subnet-2-${var.environment}" }
   availability_zone = var.availability_zone_2
 }
-resource "aws_subnet" "crankbit_private_subnet_1" {
+resource "aws_subnet" "techscrum_private_subnet_1" {
   vpc_id            = aws_vpc.backend_vpc.id
   cidr_block        = var.private_subnet_1_cidr_block
   tags              = { Name = "${var.project_name}-backend-private-subnet-1-${var.environment}" }
   availability_zone = var.availability_zone_1
 }
-resource "aws_subnet" "crankbit_private_subnet_2" {
+resource "aws_subnet" "techscrum_private_subnet_2" {
   vpc_id            = aws_vpc.backend_vpc.id
   cidr_block        = var.private_subnet_2_cidr_block
   tags              = { Name = "${var.project_name}-backend-private-subnet-2-${var.environment}" }
@@ -60,19 +60,19 @@ resource "aws_route_table" "private_routetable" {
 }
 
 resource "aws_route_table_association" "public_subnet_1" {
-  subnet_id      = aws_subnet.crankbit_public_subnet_1.id
+  subnet_id      = aws_subnet.techscrum_public_subnet_1.id
   route_table_id = aws_route_table.public_routetable.id
 }
 resource "aws_route_table_association" "public_subnet_2" {
-  subnet_id      = aws_subnet.crankbit_public_subnet_2.id
+  subnet_id      = aws_subnet.techscrum_public_subnet_2.id
   route_table_id = aws_route_table.public_routetable.id
 }
 resource "aws_route_table_association" "private_subnet_1" {
-  subnet_id      = aws_subnet.crankbit_private_subnet_1.id
+  subnet_id      = aws_subnet.techscrum_private_subnet_1.id
   route_table_id = aws_route_table.private_routetable.id
 }
 resource "aws_route_table_association" "private_subnet_2" {
-  subnet_id      = aws_subnet.crankbit_private_subnet_2.id
+  subnet_id      = aws_subnet.techscrum_private_subnet_2.id
   route_table_id = aws_route_table.private_routetable.id
 }
 
@@ -89,7 +89,7 @@ resource "aws_eip" "vpc_nat_gateway_eip" {
 }
 
 resource "aws_nat_gateway" "pub_1_nat_gateway" {
-  subnet_id         = aws_subnet.crankbit_public_subnet_1.id
+  subnet_id         = aws_subnet.techscrum_public_subnet_1.id
   connectivity_type = "public"
   allocation_id     = aws_eip.vpc_nat_gateway_eip.id
   tags              = { Name = "${var.project_name}-nat-gateway-${var.environment}" }
