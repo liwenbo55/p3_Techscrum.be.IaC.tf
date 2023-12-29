@@ -10,7 +10,7 @@ resource "aws_lb_target_group" "alb_target_group" {
 
   health_check {
     protocol            = "HTTP"
-    path                = "/health-check"
+    path                = "/api/v2/healthcheck"
     port                = "traffic-port"
     healthy_threshold   = 5
     unhealthy_threshold = 2
