@@ -4,3 +4,5 @@ terraform.*
 tf_backend_provision
 *_PLAN
 *_DESTROY
+ll.tfvars
+backend_ll.conf
