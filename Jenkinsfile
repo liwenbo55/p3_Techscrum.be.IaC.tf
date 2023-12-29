@@ -23,10 +23,10 @@ pipeline {
                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
             ]){
               dir('app/techscrum_be'){
-                sh 'terraform --version'
-                sh 'terraform init -reconfigure -backend-config=backend_uat.conf -input=false'
-                sh 'terraform plan -var-file="uat.tfvars" -out=UAT_PLAN -input=false'
-                sh 'terraform apply UAT_PLAN -input=false '
+                  sh 'terraform --version'
+                  sh 'terraform init -reconfigure -backend-config=backend_uat.conf -input=false'
+                  sh 'terraform plan -var-file="uat.tfvars" -out=UAT_PLAN -input=false'
+                  sh 'terraform apply "UAT_DESTROY" -input=false'
               }
             }
           }
