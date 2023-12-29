@@ -1,16 +1,18 @@
 pipeline {
     agent any
+    
     // parameters {
     //     string(name: 'AWS_CREDENTIAL_ID', defaultValue: 'markwang access', description: 'The ID of the AWS credentials to use')
     //     string(name: 'GIT_BRANCH', defaultValue: 'feature/devops-mark2', description: 'The Git branch to build and deploy')
     // }
+    
     stages {
       stage('Check out code'){
         steps{
           git branch:'main', url:'https://github.com/liwenbo55/p3_Techscrum.tf.be.git'                
         }
       }
-      
+
       stage('IaC') {
         steps{
           script {
