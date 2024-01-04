@@ -58,6 +58,7 @@ pipeline {
     
     post {
         success {
+            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} succeeded."
             emailext(
                 to: "lawrence.wenboli@gmail.com",
                 subject: "Back-end terraform pipeline (${params.Environment} environment) succeeded.",
@@ -70,7 +71,8 @@ pipeline {
             )
         }
 
-        failure {
+        failure
+            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} failed."
             emailext(
                 to: "lawrence.wenboli@gmail.com",
                 subject: "Back-end terraform pipeline (${params.Environment} environment) failed.",
