@@ -58,13 +58,13 @@ pipeline {
     
     post {
         success {
-            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} succeeded."
+            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} has succeeded."
             emailext(
                 to: "lawrence.wenboli@gmail.com",
                 subject: "Back-end terraform pipeline (${params.Environment} environment) succeeded.",
                 body: 
                     """
-                    Pipeline succeeded. \nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check the plan file.
+                    Pipeline succeeded. \nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}--${params.plan_apply}. \nPlease check the plan file.
                     """,
                 attachLog: false,
                 attachmentsPattern: "**/${params.Environment}_${params.Operation}_plan.txt"
@@ -72,13 +72,13 @@ pipeline {
         }
 
         failure{
-            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} failed."
+            echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} has failed."
             emailext(
                 to: "lawrence.wenboli@gmail.com",
                 subject: "Back-end terraform pipeline (${params.Environment} environment) failed.",
                 body: 
                     """
-                    Pipeline failed.\nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check logfile for more details.
+                    Pipeline failed.\nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}--${params.plan_apply}. \nPlease check logfile for more details.
                     """,
                 attachLog: true
             )
