@@ -47,7 +47,7 @@ pipeline {
                       sh "terraform apply '${params.Environment}_${params.Operation}_plan'"
                     }
                   
-                  // Generate a readable pla file
+                  // Generate a readable plan file
                   sh "terraform show -no-color ${params.Environment}_${params.Operation}_plan > ${params.Environment}_${params.Operation}_plan.txt " 
               }
             }
