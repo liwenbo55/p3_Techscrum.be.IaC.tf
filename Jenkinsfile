@@ -1,10 +1,17 @@
+// Jenkinsfile for Techscrum project (by Lawrence)
 pipeline {
     agent any
-    
-    // parameters {
-    //     string(name: 'AWS_CREDENTIAL_ID', defaultValue: 'markwang access', description: 'The ID of the AWS credentials to use')
-    //     string(name: 'GIT_BRANCH', defaultValue: 'feature/devops-mark2', description: 'The Git branch to build and deploy')
-    // }
+
+    parameters {
+        // Choose an environment to deploy frond-end resources: 'dev', 'uat', or 'prod'.
+        choice(choices: ['dev', 'uat', 'prod'], name: 'Environment', description: 'Please choose an environment.')
+
+        // Apply or destroy resources
+        choice(choices: ['deploy', 'destroy'], name: 'Operation', description: 'Deploy or destroy resources.')
+
+        // Plan is used for gengrating plan file. Apply is used to deploy or destroy resources.
+        choice(choices: ['plan','apply'], name: 'plan_apply', description: 'Plan is used for gengrating plan file. Apply is used to deploy or destroy resources.')
+    }
     
     stages {
       stage('Check out code'){
@@ -21,14 +28,58 @@ pipeline {
                credentialsId: 'lawrence-jenkins-credential']
             ]){
               dir('app/techscrum_be'){
+                  // Echo terraform vision
                   sh 'terraform --version'
-                  sh 'terraform init -reconfigure -backend-config=backend_uat.conf -input=false'
-                  sh 'terraform plan -var-file="uat.tfvars" -out=UAT_PLAN -input=false'
-                  sh 'terraform apply "UAT_PLAN"'
+
+                  // Terraform init
+                  sh "terraform init -reconfigure -backend-config=backend_${params.Environment}.conf"
+
+                  // Terraform plan                  
+                  if (params.Operation == 'deploy') {
+                      sh "terraform plan -var-file=${params.Environment}.tfvars -out=${params.Environment}_${params.Operation}_plan"
+                  } else if (params.Operation == 'destroy') {
+                      sh "terraform plan -var-file=${params.Environment}.tfvars -out=${params.Environment}_${params.Operation}_plan -destroy"
+                  } 
+
+                  // Terraform apply
+                  // if choose apply, then execute terraform apply. Else, do not apply.
+                  if (params.plan_apply == 'apply') {
+                      sh "terraform apply '${params.Environment}_${params.Operation}_plan'"
+                    }
+                  
+                  // Generate a readable pla file
+                  sh "terraform show -no-color ${params.Environment}_${params.Operation}_plan > ${params.Environment}_${params.Operation}_plan.txt " 
               }
             }
           }
         }
       }
+    }
+    
+    post {
+        success {
+            emailext(
+                to: "lawrence.wenboli@gmail.com",
+                subject: "Back-end terraform pipeline for ${params.Environment} environment succeeded.",
+                body: 
+                    """
+                    Pipeline succeeded. \nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check the plan file.
+                    """,
+                attachLog: false,
+                attachmentsPattern: "**/${params.Environment}_${params.Operation}_plan.txt"
+            )
+        }
+
+        failure {
+            emailext(
+                to: "lawrence.wenboli@gmail.com",
+                subject: "Back-end terraform pipeline for ${params.Environment} environment failed.",
+                body: 
+                    """
+                    Pipeline failed.\nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check logfile for more details.
+                    """,
+                attachLog: true
+            )
+        }
     }
 }
