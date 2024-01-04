@@ -71,7 +71,7 @@ pipeline {
             )
         }
 
-        failure
+        failure{
             echo "Backend: ${params.Environment}--${params.Operation}--${params.plan_apply} failed."
             emailext(
                 to: "lawrence.wenboli@gmail.com",
