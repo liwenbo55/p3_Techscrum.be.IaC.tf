@@ -18,9 +18,7 @@ pipeline {
           script {
             withCredentials([
               [$class: 'AmazonWebServicesCredentialsBinding', 
-               credentialsId: 'lawrence-jenkins-credential', 
-               accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
-               secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+               credentialsId: 'lawrence-jenkins-credential']
             ]){
               dir('app/techscrum_be'){
                   sh 'terraform --version'
