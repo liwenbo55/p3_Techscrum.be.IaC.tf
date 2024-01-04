@@ -60,7 +60,7 @@ pipeline {
         success {
             emailext(
                 to: "lawrence.wenboli@gmail.com",
-                subject: "Back-end terraform pipeline for ${params.Environment} environment succeeded.",
+                subject: "Back-end terraform pipeline (${params.Environment} environment) succeeded.",
                 body: 
                     """
                     Pipeline succeeded. \nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check the plan file.
@@ -73,7 +73,7 @@ pipeline {
         failure {
             emailext(
                 to: "lawrence.wenboli@gmail.com",
-                subject: "Back-end terraform pipeline for ${params.Environment} environment failed.",
+                subject: "Back-end terraform pipeline (${params.Environment} environment) failed.",
                 body: 
                     """
                     Pipeline failed.\nEnvironment: ${params.Environment}. \nOperation: ${params.Operation}. \nPlease check logfile for more details.
