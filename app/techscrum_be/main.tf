@@ -53,3 +53,10 @@ module "ECS" {
   ecs_service_network_security_groups = [module.Security_Group.ecs_security_group_id]
   ecs_service_target_group_arn        = module.ALB.alb_target_group_arn
 }
+
+module "Monitoring" {
+  source       = "../../modules/Monitoring"
+  project_name = var.project_name
+  environment  = var.environment
+  backend_fqdn = module.ALB.backend_fqdn
+}
