@@ -150,9 +150,9 @@ variable "ecs_autoscaling_max_capacity" {
 }
 
 variable "ecs_autoscaling_min_capacity" {
-  description = "The min capacity of the scalable target. Default to 1."
+  description = "The min capacity of the scalable target. Default to 2."
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "ecs_autoscaling_scalable_dimension" {
