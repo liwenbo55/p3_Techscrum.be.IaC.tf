@@ -30,30 +30,78 @@ resource "aws_ecs_task_definition" "ecs_task" {
   execution_role_arn       = var.task_definition_execution_role_arn
 
   container_definitions = jsonencode([
-    {
-      name  = "${var.project_name}-backend-container-${var.environment}"
-      image = "${var.container_image}:latest"
-      #   cpu       = var.task_definition_fargate_cpu
-      #   memory    = var.task_definition_fargate_memory
-      essential = var.container_essential
-      portMappings = [
-        {
-          containerPort = var.container_portMappings_containerPort
-          hostPort      = var.container_portMappings_hostPort
-          protocol      = var.container_portMappings_protocol
-        }
-      ],
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = "${var.project_name}-backend-ecs-container-${var.environment}"
-          "awslogs-region"        = "ap-southeast-2"
-          "awslogs-create-group"  = "true"
-          "awslogs-stream-prefix" = "ecs"
-        }
+  {
+    "name"        : "${var.project_name}-backend-container-${var.environment}",
+    "image"       : "${var.container_image}:latest",
+    "essential"   : var.container_essential,
+    "portMappings": [
+      {
+        "containerPort": var.container_portMappings_containerPort,
+        "hostPort"     : var.container_portMappings_hostPort,
+        "protocol"     : var.container_portMappings_protocol
+      }
+    ],
+    "healthCheck" : {
+        "command"     : [
+          "CMD-SHELL", 
+          "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"
+          ],
+        "interval"    : 30,
+        "timeout"     : 5,
+        "retries"     : 3,
+        "startPeriod" : 0
+      },
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options"  : {
+        "awslogs-group"         : "${var.project_name}-backend-ecs-container-${var.environment}",
+        "awslogs-region"        : "ap-southeast-2",
+        "awslogs-create-group"  : "true",
+        "awslogs-stream-prefix" : "ecs"
       }
     }
-  ])
+  }
+])
+
+  # container_definitions = jsonencode([
+  #   {
+  #     name  = "${var.project_name}-backend-container-${var.environment}"
+  #     image = "${var.container_image}:latest"
+  #     #   cpu       = var.task_definition_fargate_cpu
+  #     #   memory    = var.task_definition_fargate_memory
+  #     essential = var.container_essential
+  #     portMappings = [
+  #       {
+  #         containerPort = var.container_portMappings_containerPort
+  #         hostPort      = var.container_portMappings_hostPort
+  #         protocol      = var.container_portMappings_protocol
+  #       }
+  #     ],
+  #     healthCheck = {
+  #         command     = ["CMD-SHELL", "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"]
+  #         interval    = 30
+  #         timeout     = 5
+  #         retries     = 3
+  #         startPeriod = 0
+  #       },
+  #     # "healthCheck": {
+  #     # "command": ["CMD-SHELL", "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"],
+  #     # "interval": 30,
+  #     # "timeout": 5,
+  #     # "retries": 3,
+  #     # "startPeriod": 0
+  #     # },
+  #     logConfiguration = {
+  #       logDriver = "awslogs"
+  #       options = {
+  #         "awslogs-group"         = "${var.project_name}-backend-ecs-container-${var.environment}"
+  #         "awslogs-region"        = "ap-southeast-2"
+  #         "awslogs-create-group"  = "true"
+  #         "awslogs-stream-prefix" = "ecs"
+  #       }
+  #     }
+  #   }
+  # ])
 
   runtime_platform {
     operating_system_family = var.task_definition_runtime_platform_system
