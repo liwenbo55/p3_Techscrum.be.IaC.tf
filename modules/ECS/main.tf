@@ -124,6 +124,7 @@ resource "aws_ecs_service" "ecs_service" {
   name                 = "${var.project_name}-ecs-service-${var.environment}"
   desired_count        = var.ecs_service_desired_tasks
   force_new_deployment = var.ecs_service_force_new_deployment
+  health_check_grace_period_seconds = 30
 
   network_configuration {
     security_groups  = var.ecs_service_network_security_groups
