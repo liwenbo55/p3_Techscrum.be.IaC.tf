@@ -12,3 +12,9 @@ variable "environment" {
   description = "The environment name."
   type        = string
 }
+
+
+variable "alb_arn_suffix" {
+  description = "The loadbalancer arn."
+  type        = string
+}
