@@ -5,7 +5,7 @@ resource "aws_lb_target_group" "alb_target_group" {
   name        = "${var.project_name}-alb-target-group-${var.environment}"
   target_type = "ip"
   protocol    = "HTTP"
-  port        = 80
+  port        = 8000
   vpc_id      = var.alb_target_group_vpc_id
 
   health_check {
@@ -40,7 +40,7 @@ resource "aws_lb" "backend_alb" {
 
 resource "aws_lb_listener" "backend_alb_80" {
   load_balancer_arn = aws_lb.backend_alb.arn
-  port              = "80"
+  port              = "8000"
   protocol          = "HTTP"
 
   default_action {
