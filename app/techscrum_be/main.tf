@@ -59,4 +59,5 @@ module "Monitoring" {
   project_name = var.project_name
   environment  = var.environment
   backend_fqdn = module.ALB.backend_fqdn
+  alb_arn_suffix      = module.ALB.alb_arn_suffix
 }
