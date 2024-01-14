@@ -174,7 +174,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
   scalable_dimension = var.ecs_autoscaling_scalable_dimension
 }
 
-# Scale up and scale down policy
+# Scale up and scale down policy (for +1/-1 task)
 resource "aws_appautoscaling_policy" "scale_up_policy" {
   name               = "${var.project_name}-ecs-scale-up-policy-${var.environment}"
   resource_id        = aws_appautoscaling_target.ecs_target.resource_id
@@ -212,7 +212,8 @@ resource "aws_appautoscaling_policy" "scale_down_policy" {
   }
 }
 
-# Create two alarms and alarm actions
+# Create two alarms and alarm actions.
+# Alarms are used to trigger autoscaling polices.
 resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   alarm_name          = "${var.project_name}-ecs-service-cpu-high-alarm-${var.environment}"
   comparison_operator = "GreaterThanOrEqualToThreshold"
