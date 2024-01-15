@@ -62,4 +62,6 @@ module "Monitoring" {
   alb_arn_suffix      = module.ALB.alb_arn_suffix
   alb_target_group_arn_suffix = module.ALB.alb_target_group_arn_suffix
   sns_email =var.sns_email
+  ecs_cluster_name=module.ECS.ecs_cluster_name
+  ecs_service_name=module.ECS.ecs_service_name
 }
