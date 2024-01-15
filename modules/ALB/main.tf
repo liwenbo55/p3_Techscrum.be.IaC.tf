@@ -71,8 +71,8 @@ resource "aws_lb_listener" "backendalb_443" {
 ##########################################################################
 resource "aws_route53_record" "a_record_for_alb" {
   zone_id = var.hosted_zone_id
-  name = "backend.${var.environment}.${var.hosted_zone_name}"
-  type = var.record_type_A
+  name    = "backend.${var.environment}.${var.hosted_zone_name}"
+  type    = var.record_type_A
 
   alias {
     name                   = aws_lb.backend_alb.dns_name

@@ -17,8 +17,8 @@ resource "aws_route53_health_check" "backend_healthcheck" {
 
 # The alarm for route53 must be located in the us-east-1 region.
 provider "aws" {
-    alias  = "Virginia"
-    region = "us-east-1"
+  alias  = "Virginia"
+  region = "us-east-1"
 }
 
 resource "aws_cloudwatch_metric_alarm" "healthcheck_alarm" {
