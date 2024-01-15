@@ -22,3 +22,8 @@ variable "alb_target_group_arn_suffix" {
   description = "The loadbalancer target group arn."
   type        = string
 }
+
+variable "sns_email" {
+  description = "An email address to send data in SNS service."
+  type        = string
+}
