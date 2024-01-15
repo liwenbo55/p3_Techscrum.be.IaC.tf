@@ -21,11 +21,11 @@ resource "aws_cloudwatch_dashboard" "alb_dashboard" {
                         { "label": "ALB Request Count" } 
                     ]
                 ],
-            "view": "timeSeries",
-            "period": 60,
-            "stat": "Sum",
-            "region":"ap-southeast-2",
-            "title": "ALB Request Count"
+                "view": "timeSeries",
+                "period": 60,
+                "stat": "Sum",
+                "region":"ap-southeast-2",
+                "title": "ALB Request Count"
             }
         },
         {
@@ -51,11 +51,11 @@ resource "aws_cloudwatch_dashboard" "alb_dashboard" {
                         { "label": "ap-southeast-2b Response Time" } 
                     ]
                 ],
-            "view": "timeSeries",
-            "period": 300,
-            "stat": "Average",
-            "region":"ap-southeast-2",
-            "title": "ALB Target Response Time"
+                "view": "timeSeries",
+                "period": 300,
+                "stat": "Average",
+                "region":"ap-southeast-2",
+                "title": "ALB Target Response Time"
             }
         }
     ]
