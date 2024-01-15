@@ -22,3 +22,9 @@ resource "aws_iam_role_policy_attachment" "AmazonECSTaskExecutionRolePolicy" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+# Attach "SSMReadOnlyAcces" policy to ecs_task_execution_role.
+resource "aws_iam_role_policy_attachment" "AmazonSSMReadOnlyAccess" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
+}
