@@ -28,80 +28,61 @@ resource "aws_ecs_task_definition" "ecs_task" {
   memory                   = var.task_definition_fargate_memory
   requires_compatibilities = var.task_definition_launch_type
   execution_role_arn       = var.task_definition_execution_role_arn
+  task_role_arn            = var.task_definition_execution_role_arn
 
   container_definitions = jsonencode([
-  {
-    "name"        : "${var.project_name}-backend-container-${var.environment}",
-    "image"       : "${var.container_image}:latest",
-    "essential"   : var.container_essential,
-    "portMappings": [
-      {
-        "containerPort": var.container_portMappings_containerPort,
-        "hostPort"     : var.container_portMappings_hostPort,
-        "protocol"     : var.container_portMappings_protocol
-      }
-    ],
-    "healthCheck" : {
-        "command"     : [
-          "CMD-SHELL", 
+    {
+      "name" : "${var.project_name}-backend-container-${var.environment}",
+      "image" : "${var.container_image}:latest",
+      "essential" : var.container_essential,
+      "portMappings" : [
+        {
+          "containerPort" : var.container_portMappings_containerPort,
+          "hostPort" : var.container_portMappings_hostPort,
+          "protocol" : var.container_portMappings_protocol
+        }
+      ],
+      "healthCheck" : {
+        "command" : [
+          "CMD-SHELL",
           "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"
-          ],
-        "interval"    : 30,
-        "timeout"     : 5,
-        "retries"     : 3,
+        ],
+        "interval" : 30,
+        "timeout" : 5,
+        "retries" : 3,
         "startPeriod" : 0
       },
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options"  : {
-        "awslogs-group"         : "${var.project_name}-backend-ecs-container-${var.environment}",
-        "awslogs-region"        : "ap-southeast-2",
-        "awslogs-create-group"  : "true",
-        "awslogs-stream-prefix" : "ecs"
-      }
+      "logConfiguration" : {
+        "logDriver" : "awslogs",
+        "options" : {
+          "awslogs-group" : "${var.project_name}-backend-ecs-container-${var.environment}",
+          "awslogs-region" : "ap-southeast-2",
+          "awslogs-create-group" : "true",
+          "awslogs-stream-prefix" : "ecs"
+        }
+      },
+      "environment" : [
+        { "name" : "ENVIRONMENT", "value" : "${data.aws_ssm_parameter.environment.value}" },
+        { "name" : "NAME", "value" : "${data.aws_ssm_parameter.name.value}" },
+        { "name" : "PORT", "value" : "${data.aws_ssm_parameter.port.value}" },
+        { "name" : "API_PREFIX", "value" : "${data.aws_ssm_parameter.api_prefix.value}" },
+        { "name" : "AWS_REGION", "value" : "${data.aws_ssm_parameter.region.value}" },
+        { "name" : "ACCESS_SECRET", "value" : "${data.aws_ssm_parameter.access_secret.value}" },
+        { "name" : "EMAIL_SECRET", "value" : "${data.aws_ssm_parameter.email_secret.value}" },
+        { "name" : "FORGET_SECRET", "value" : "${data.aws_ssm_parameter.forget_secret.value}" },
+        { "name" : "LIMITER", "value" : "${data.aws_ssm_parameter.limiter.value}" },
+        { "name" : "MAIN_DOMAIN", "value" : "${data.aws_ssm_parameter.main_domain.value}" },
+        { "name" : "STRIPE_PRIVATE_KEY", "value" : "${data.aws_ssm_parameter.stripe_private_key.value}" },
+        { "name" : "STRIPE_WEBHOOK_SECRET", "value" : "${data.aws_ssm_parameter.stripe_webhook_secret.value}" }
+      ],
+      "secrets" : [
+        { "name" : "AWS_SECRET_ACCESS_KEY", "valueFrom" : "${data.aws_ssm_parameter.secret_access_key.arn}" },
+        { "name" : "AWS_ACCESS_KEY_ID", "valueFrom" : "${data.aws_ssm_parameter.access_key_id.arn}" },
+        { "name" : "PUBLIC_CONNECTION", "valueFrom" : "${data.aws_ssm_parameter.public_connection.arn}" },
+        { "name" : "TENANTS_CONNECTION", "valueFrom" : "${data.aws_ssm_parameter.tenants_connection.arn}" }
+      ]
     }
-  }
-])
-
-  # container_definitions = jsonencode([
-  #   {
-  #     name  = "${var.project_name}-backend-container-${var.environment}"
-  #     image = "${var.container_image}:latest"
-  #     #   cpu       = var.task_definition_fargate_cpu
-  #     #   memory    = var.task_definition_fargate_memory
-  #     essential = var.container_essential
-  #     portMappings = [
-  #       {
-  #         containerPort = var.container_portMappings_containerPort
-  #         hostPort      = var.container_portMappings_hostPort
-  #         protocol      = var.container_portMappings_protocol
-  #       }
-  #     ],
-  #     healthCheck = {
-  #         command     = ["CMD-SHELL", "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"]
-  #         interval    = 30
-  #         timeout     = 5
-  #         retries     = 3
-  #         startPeriod = 0
-  #       },
-  #     # "healthCheck": {
-  #     # "command": ["CMD-SHELL", "curl -f http://localhost:8000/api/v2/healthcheck || exit 1"],
-  #     # "interval": 30,
-  #     # "timeout": 5,
-  #     # "retries": 3,
-  #     # "startPeriod": 0
-  #     # },
-  #     logConfiguration = {
-  #       logDriver = "awslogs"
-  #       options = {
-  #         "awslogs-group"         = "${var.project_name}-backend-ecs-container-${var.environment}"
-  #         "awslogs-region"        = "ap-southeast-2"
-  #         "awslogs-create-group"  = "true"
-  #         "awslogs-stream-prefix" = "ecs"
-  #       }
-  #     }
-  #   }
-  # ])
+  ])
 
   runtime_platform {
     operating_system_family = var.task_definition_runtime_platform_system
@@ -117,13 +98,13 @@ resource "aws_ecs_task_definition" "ecs_task" {
 # ECS service
 ##########################################################################
 resource "aws_ecs_service" "ecs_service" {
-  launch_type          = var.ecs_service_launch_type
-  task_definition      = aws_ecs_task_definition.ecs_task.arn
-  platform_version     = var.ecs_service_platform_version
-  cluster              = aws_ecs_cluster.backend_ecs.arn
-  name                 = "${var.project_name}-ecs-service-${var.environment}"
-  desired_count        = var.ecs_service_desired_tasks
-  force_new_deployment = var.ecs_service_force_new_deployment
+  launch_type                       = var.ecs_service_launch_type
+  task_definition                   = aws_ecs_task_definition.ecs_task.arn
+  platform_version                  = var.ecs_service_platform_version
+  cluster                           = aws_ecs_cluster.backend_ecs.arn
+  name                              = "${var.project_name}-ecs-service-${var.environment}"
+  desired_count                     = var.ecs_service_desired_tasks
+  force_new_deployment              = var.ecs_service_force_new_deployment
   health_check_grace_period_seconds = 30
 
   network_configuration {
@@ -211,8 +192,9 @@ resource "aws_appautoscaling_policy" "scale_down_policy" {
     }
   }
 }
-
+##########################################################################
 # Create two alarms and alarm actions.
+##########################################################################
 # Alarms are used to trigger autoscaling polices.
 resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   alarm_name          = "${var.project_name}-ecs-service-cpu-high-alarm-${var.environment}"
@@ -224,7 +206,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
   statistic           = "Maximum"
   threshold           = "80"
   # threshold           = "0.1"
-  alarm_actions       = [aws_appautoscaling_policy.scale_up_policy.arn]
+  alarm_actions = [aws_appautoscaling_policy.scale_up_policy.arn]
 
   dimensions = {
     ClusterName = aws_ecs_cluster.backend_ecs.name
