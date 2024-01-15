@@ -73,7 +73,8 @@ resource "aws_ecs_task_definition" "ecs_task" {
         { "name" : "LIMITER", "value" : "${data.aws_ssm_parameter.limiter.value}" },
         { "name" : "MAIN_DOMAIN", "value" : "${data.aws_ssm_parameter.main_domain.value}" },
         { "name" : "STRIPE_PRIVATE_KEY", "value" : "${data.aws_ssm_parameter.stripe_private_key.value}" },
-        { "name" : "STRIPE_WEBHOOK_SECRET", "value" : "${data.aws_ssm_parameter.stripe_webhook_secret.value}" }
+        { "name" : "STRIPE_WEBHOOK_SECRET", "value" : "${data.aws_ssm_parameter.stripe_webhook_secret.value}" },
+        { "name" : "DEVOPS_MODE", "value" : "${data.aws_ssm_parameter.devops_mode.value}" }
       ],
       "secrets" : [
         { "name" : "AWS_SECRET_ACCESS_KEY", "valueFrom" : "${data.aws_ssm_parameter.secret_access_key.arn}" },

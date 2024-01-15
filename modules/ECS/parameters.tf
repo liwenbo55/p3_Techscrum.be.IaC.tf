@@ -68,3 +68,7 @@ data "aws_ssm_parameter" "stripe_private_key" {
 data "aws_ssm_parameter" "stripe_webhook_secret" {
   name = "/techscrum/STRIPE_WEBHOOK_SECRET"
 }
+
+data "aws_ssm_parameter" "devops_mode" {
+  name = "/techscrum/DEVOPS_MODE"
+}
