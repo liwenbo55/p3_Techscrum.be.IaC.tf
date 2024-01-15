@@ -107,7 +107,7 @@ variable "ecs_service_platform_version" {
 variable "ecs_service_desired_tasks" {
   description = "Number of instances of the task definition to place and keep running. Default to 2."
   type        = number
-  default     = 1
+  default     = 2
 }
 variable "ecs_service_force_new_deployment" {
   description = "Enable to force a new task deployment of the service. This can be used to update tasks to use a newer Docker image with same image/tag combination (e.g., myimage:latest)."
@@ -150,9 +150,9 @@ variable "ecs_autoscaling_max_capacity" {
 }
 
 variable "ecs_autoscaling_min_capacity" {
-  description = "The min capacity of the scalable target. Default to 1."
+  description = "The min capacity of the scalable target. Default to 2."
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "ecs_autoscaling_scalable_dimension" {

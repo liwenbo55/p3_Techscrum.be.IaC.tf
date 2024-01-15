@@ -40,7 +40,7 @@ resource "aws_lb" "backend_alb" {
 
 resource "aws_lb_listener" "backend_alb_80" {
   load_balancer_arn = aws_lb.backend_alb.arn
-  port              = "8000"
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
