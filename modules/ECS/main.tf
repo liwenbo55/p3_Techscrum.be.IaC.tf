@@ -28,6 +28,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
   memory                   = var.task_definition_fargate_memory
   requires_compatibilities = var.task_definition_launch_type
   execution_role_arn       = var.task_definition_execution_role_arn
+  task_role_arn            = var.task_definition_execution_role_arn
 
   container_definitions = jsonencode([
     {
