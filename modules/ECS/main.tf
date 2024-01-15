@@ -61,6 +61,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
         }
       },
       "environment" : [
+        { "name" : "ENVIRONMENT", "value" : "${data.aws_ssm_parameter.environment.value}" },
         { "name" : "NAME", "value" : "${data.aws_ssm_parameter.name.value}" },
         { "name" : "PORT", "value" : "${data.aws_ssm_parameter.port.value}" },
         { "name" : "API_PREFIX", "value" : "${data.aws_ssm_parameter.api_prefix.value}" },
@@ -74,9 +75,8 @@ resource "aws_ecs_task_definition" "ecs_task" {
         { "name" : "STRIPE_WEBHOOK_SECRET", "value" : "${data.aws_ssm_parameter.stripe_webhook_secret.value}" }
       ],
       "secrets" : [
-        { "name" : "ENVIRONMENT", "valueFrom" : "${data.aws_ssm_parameter.environment.arn}" },
         { "name" : "AWS_SECRET_ACCESS_KEY", "valueFrom" : "${data.aws_ssm_parameter.secret_access_key.arn}" },
-        { "name" : "AWS_ACCESS_KEY_ID", "value" : "${data.aws_ssm_parameter.access_key_id.value}" },
+        { "name" : "AWS_ACCESS_KEY_ID", "valueFrom" : "${data.aws_ssm_parameter.access_key_id.arn}" },
         { "name" : "PUBLIC_CONNECTION", "valueFrom" : "${data.aws_ssm_parameter.public_connection.arn}" },
         { "name" : "TENANTS_CONNECTION", "valueFrom" : "${data.aws_ssm_parameter.tenants_connection.arn}" }
       ]
