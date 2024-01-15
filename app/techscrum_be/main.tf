@@ -60,4 +60,5 @@ module "Monitoring" {
   environment  = var.environment
   backend_fqdn = module.ALB.backend_fqdn
   alb_arn_suffix      = module.ALB.alb_arn_suffix
+  alb_target_group_arn_suffix = module.ALB.alb_target_group_arn_suffix
 }

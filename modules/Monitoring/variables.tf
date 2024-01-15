@@ -13,8 +13,12 @@ variable "environment" {
   type        = string
 }
 
-
 variable "alb_arn_suffix" {
   description = "The loadbalancer arn."
+  type        = string
+}
+
+variable "alb_target_group_arn_suffix" {
+  description = "The loadbalancer target group arn."
   type        = string
 }

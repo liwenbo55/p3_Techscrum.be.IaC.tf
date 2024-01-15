@@ -9,3 +9,7 @@ output "backend_fqdn" {
 output "alb_arn_suffix" {
   value = aws_lb.backend_alb.arn_suffix
 }
+
+output "alb_target_group_arn_suffix" {
+  value = aws_lb_target_group.alb_target_group.arn_suffix 
+}
