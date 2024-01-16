@@ -110,7 +110,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   network_configuration {
     security_groups  = var.ecs_service_network_security_groups
-    subnets          = var.ecs_service_vpc_subnets
+    subnets          = var.environment == "prod" || var.environment == "uat" ? var.ecs_service_vpc_private_subnets : var.ecs_service_vpc_public_subnets
     assign_public_ip = var.ecs_service_network_assign_public_ip
   }
 

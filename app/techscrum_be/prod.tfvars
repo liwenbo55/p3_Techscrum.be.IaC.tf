@@ -1,6 +1,6 @@
 aws_region   = "ap-southeast-2"
 project_name = "techscrum"
-environment      = "prod"
+environment  = "prod"
 
 # The name of the route53 hosted zone.
 # hosted_zone_name = "wenboli.xyz"

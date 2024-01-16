@@ -120,8 +120,12 @@ variable "ecs_service_network_security_groups" {
   description = "Security groups associated with the service."
   type        = list(string)
 }
-variable "ecs_service_vpc_subnets" {
-  description = "Subnets associated with the service."
+variable "ecs_service_vpc_private_subnets" {
+  description = "Private subnets associated with the service. (For uat & prod environment.)"
+  type        = list(string)
+}
+variable "ecs_service_vpc_public_subnets" {
+  description = "Public subnets associated with the service. (For dev environment.)"
   type        = list(string)
 }
 variable "ecs_service_network_assign_public_ip" {
