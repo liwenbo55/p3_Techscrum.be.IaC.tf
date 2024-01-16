@@ -12,11 +12,11 @@ resource "aws_lb_target_group" "alb_target_group" {
     protocol            = "HTTP"
     path                = "/api/v2/healthcheck"
     port                = "traffic-port"
-    healthy_threshold   = 5
-    unhealthy_threshold = 2
-    timeout             = 5
-    interval            = 20
-    matcher             = "200"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 10
+    interval            = 30
+    matcher             = "200-399"
   }
   tags = {
     Environment = var.environment
