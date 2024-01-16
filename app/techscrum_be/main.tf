@@ -50,7 +50,7 @@ module "ECS" {
   container_image                     = module.ECR.repository_url
   task_definition_execution_role_arn  = module.IAM.ecs_task_execution_role_arn
   ecs_service_vpc_private_subnets     = [module.VPC.vpc_private_subnet_1_id, module.VPC.vpc_private_subnet_2_id]
-  ecs_service_vpc_public_subnets      = [module.VPC.vpc_private_subnet_1_id, module.VPC.vpc_private_subnet_2_id]
+  ecs_service_vpc_public_subnets      = [module.VPC.vpc_public_subnet_1_id, module.VPC.vpc_public_subnet_2_id]
   ecs_service_network_security_groups = [module.Security_Group.ecs_security_group_id]
   ecs_service_target_group_arn        = module.ALB.alb_target_group_arn
 }
