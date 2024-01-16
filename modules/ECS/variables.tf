@@ -38,9 +38,9 @@ variable "task_definition_fargate_cpu" {
 }
 
 variable "task_definition_fargate_memory" {
-  description = "Amount (in MiB) of memory used by the task. Default to 2048 for 2GB."
+  description = "Amount (in MiB) of memory used by the task. Default to 3072 for 3GB."
   type        = number
-  default     = 2048
+  default     = 3072
 }
 variable "task_definition_launch_type" {
   description = "Set of launch types required by the task. The valid values are EC2 and FARGATE."
@@ -120,8 +120,12 @@ variable "ecs_service_network_security_groups" {
   description = "Security groups associated with the service."
   type        = list(string)
 }
-variable "ecs_service_vpc_subnets" {
-  description = "Subnets associated with the service."
+variable "ecs_service_vpc_private_subnets" {
+  description = "Private subnets associated with the service. (For uat & prod environment.)"
+  type        = list(string)
+}
+variable "ecs_service_vpc_public_subnets" {
+  description = "Public subnets associated with the service. (For dev environment.)"
   type        = list(string)
 }
 variable "ecs_service_network_assign_public_ip" {
