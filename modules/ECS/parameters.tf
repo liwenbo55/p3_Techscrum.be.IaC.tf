@@ -22,15 +22,15 @@ data "aws_ssm_parameter" "api_prefix" {
 }
 
 data "aws_ssm_parameter" "region" {
-  name = "/techscrum/REGION"
+  name = "/techscrum/AWS_REGION"
 }
 
 data "aws_ssm_parameter" "access_key_id" {
-  name = "/techscrum/ACCESS_KEY_ID"
+  name = "/techscrum/AWS_ACCESS_KEY_ID"
 }
 
 data "aws_ssm_parameter" "secret_access_key" {
-  name = "/techscrum/SECRET_ACCESS_KEY"
+  name = "/techscrum/AWS_SECRET_ACCESS_KEY"
 }
 
 data "aws_ssm_parameter" "access_secret" {
